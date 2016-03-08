@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+  <!-- simple ajax requests without extra dependencies -->
+  <script src="/assets/js/xmlhttprequest.js"></script>
+  <!-- preventing double import of polymer; thanks Artur! -->
+  <%= import_vaadin_elements %>
+
+</head>
+<body>
+<p>Select a year or a birthplace. One selection overrides the other.</p>
+
+<vaadin-date-picker id="date"></vaadin-date-picker>
+
+<p>Select a person to see the birthplace (and other people born there):</p>
+
+<vaadin-combo-box id="people"></vaadin-combo-box>
+
+<vaadin-combo-box id="birthplace"></vaadin-combo-box>
+
+<p>People born in a selected birthplace or selected year:</p>
+
+<vaadin-grid id="grid"></vaadin-grid>
+
+<p>Last captured value: <span id="last-value"> </span></p>
+
+<script>
+
+  function serverCallbackResponse(e) {
+    console.log(e);
+    var resp = JSON.parse(e);
+    for(var oid in resp) {
+      var comp = document.querySelector("#"+oid);
+      for(var meth in resp[oid]) {
+        comp[meth] = resp[oid][meth];
+      }
+    }
+  }
+
+  // The Web Components polyfill introduces a custom event we can
+  // use to determine when the custom elements are ready to be used.
+  document.addEventListener("WebComponentsReady", function (e) {
+    var comp;
+  <% @elements.each do |id, values| %>
+      comp = document.querySelector("#<%= id %>");
+    <% values.each do |key, value| %>
+      comp.<%= key %> = <%= value.to_json %>;
+    <% end %>
+      comp.addEventListener("value-changed", function(e) {
+        document.querySelector("#last-value").innerHTML = e.detail.value;
+        ajax.post("/~", {id: '<%= id %>', value: e.detail.value}, serverCallbackResponse);
+    });
+  <% end %>
+
+ });
+</script>
+
+</body>
+</html>
