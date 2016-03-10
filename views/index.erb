@@ -25,34 +25,7 @@
 <p>Last captured value: <span id="last-value"> </span></p>
 
 <script>
-
-  function serverCallbackResponse(e) {
-    console.log(e);
-    var resp = JSON.parse(e);
-    for(var oid in resp) {
-      var comp = document.querySelector("#"+oid);
-      for(var meth in resp[oid]) {
-        comp[meth] = resp[oid][meth];
-      }
-    }
-  }
-
-  // The Web Components polyfill introduces a custom event we can
-  // use to determine when the custom elements are ready to be used.
-  document.addEventListener("WebComponentsReady", function (e) {
-    var comp;
-  <% @elements.each do |id, values| %>
-      comp = document.querySelector("#<%= id %>");
-    <% values.each do |key, value| %>
-      comp.<%= key %> = <%= value.to_json %>;
-    <% end %>
-      comp.addEventListener("value-changed", function(e) {
-        document.querySelector("#last-value").innerHTML = e.detail.value;
-        ajax.post("/~", {id: '<%= id %>', value: e.detail.value}, serverCallbackResponse);
-    });
-  <% end %>
-
- });
+  <%= setup_vaadin_elements %>
 </script>
 
 </body>
