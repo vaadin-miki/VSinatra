@@ -1,6 +1,6 @@
 require 'sinatra/base'
 require 'tilt/erb'
-require_relative 'vaadin-elements'
+require 'vaadin/elements'
 require_relative 'data/person'
 
 class VElementsApp < Sinatra::Base

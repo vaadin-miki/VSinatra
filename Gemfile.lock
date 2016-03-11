@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/vaadin-miki/vaadin-elements.git
+  revision: 66c488af5d147d4e6d648db3203067ba77a410d1
+  specs:
+    vaadin-elements (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -20,6 +26,7 @@ DEPENDENCIES
   bundler
   sinatra
   test-unit
+  vaadin-elements!
 
 BUNDLED WITH
    1.11.2
