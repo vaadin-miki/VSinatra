@@ -55,7 +55,20 @@ module Vaadin
     include RememberHashChanges
 
     def sync(params)
-      ignore_changes { self[params["id"]] = params["value"] if params["id"] }
+      ignore_changes do
+        params.keys.select { |k| k != "id" }.each { |key| self[params["id"]][key] = params[key] } if params["id"]
+      end
+    end
+
+    {"combo_box" => %w{allowCustomValue disabled itemLabelPath items itemValuePath label opened readonly selectedItem value},
+     "grid" => %w{cellClassGenerator columns disabled footer frozenColumns header items rowClassGenerator rowDetailsGenerator selection size sortOrder visibleRows},
+     "date_picker" => %w{i18n initialPosition label value}
+    }.each do |key, value|
+      define_singleton_method key do
+        result = Elements.new.extend(HashWithLimitedKeys)
+        result.allowed_keys = value
+        result
+      end
     end
 
   end

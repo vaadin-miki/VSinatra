@@ -6,7 +6,7 @@ require_relative 'data/person'
 class VElementsApp < Sinatra::Base
 
   enable :sessions
-  set :session_secret, "236ktodcgyzlwyn9%"
+  set :session_secret, "asd"
 
   set :app_file, __FILE__
   set :server, ["webrick"]

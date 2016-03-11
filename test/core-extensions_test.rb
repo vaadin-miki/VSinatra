@@ -6,6 +6,7 @@ class CoreExtensionsTest < Test::Unit::TestCase
   class MockHash < Hash
     include HashKeysAsMethods
     include RememberHashChanges
+    include HashWithLimitedKeys
   end
 
   # Called before every test method runs. Can be used
@@ -71,6 +72,34 @@ class CoreExtensionsTest < Test::Unit::TestCase
     @map.ignore_changes { @map.foo = "bar" }
     assert_false(@map.has_changes?)
     assert_true(!@map.ignore_changes)
+  end
+
+  def test_limited_keys
+    @map.allowed_keys = %w{foo bar baz}
+    @map.foo = "foo"
+    @map.blah = "nope"
+    @map["bar"] = "bar"
+    assert_equal(2, @map.keys.size)
+    assert_equal("foo", @map.foo)
+    assert_equal("bar", @map.bar)
+    assert_equal([["foo", "foo"], ["bar", "bar"]], @map.to_a)
+  end
+
+  def test_clear_disallowed_keys
+    @map.foo = "foo"
+    @map.blah = "nope"
+    @map["bar"] = "bar"
+
+    @map.allowed_keys = %w{foo bar baz}
+    # nothing happens
+    assert_equal({"foo" => "foo", "blah" => "nope", "bar" => "bar"}, @map)
+
+    @map.clear_disallowed_keys!
+
+    assert_equal(2, @map.keys.size)
+    assert_equal("foo", @map.foo)
+    assert_equal("bar", @map.bar)
+    assert_equal([["foo", "foo"], ["bar", "bar"]], @map.to_a)
   end
 
 end

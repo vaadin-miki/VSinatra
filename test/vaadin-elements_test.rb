@@ -36,4 +36,13 @@ class ElementsTest < Test::Unit::TestCase
     assert_equal "function serverCallbackResponse(e) {\n\n         console.log(e);\n\n         var resp = JSON.parse(e);\n\n         for(var oid in resp) {\n\n           var comp = document.querySelector('#'+oid);\n\n           for(var meth in resp[oid]) {\n\n             if(meth in comp) {\n\n             comp[meth] = resp[oid][meth];\n\n       }}}};\ndocument.addEventListener(\"WebComponentsReady\", function (e) {\nvar grid = document.querySelector(\"#grid\");\nif('items' in grid) {\ngrid.items = [{\"name\":\"Ruby\",\"type\":\"dynamic\"},{\"name\":\"Java\",\"type\":\"static\"}]\n};\ngrid.addEventListener(\"value-changed\", function(e) {ajax.post(\"~/grid\", {id: 'grid', value: e.detail.value}, serverCallbackResponse)});\n});", js
   end
 
+  def test_combo_box
+    combo = Vaadin::Elements.combo_box
+    combo.thisNot = "oh no"
+    assert_nil(combo.thisNot)
+    combo.readonly = true
+    json = combo.to_json
+    assert_equal("{\"readonly\":true}", json)
+  end
+
 end

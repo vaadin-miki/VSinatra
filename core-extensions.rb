@@ -19,6 +19,22 @@ module HashKeysAsMethods
   end
 end
 
+module HashWithLimitedKeys
+  attr_accessor :allowed_keys
+
+  def clear_disallowed_keys!
+    self.delete_if { |key, value| !allowed_keys.include?(key) } if allowed_keys
+  end
+
+  def []=(name, value)
+    super if allowed_keys.nil? || allowed_keys.include?(name)
+  end
+
+  def [](name)
+    super if allowed_keys.nil? || allowed_keys.include?(name)
+  end
+end
+
 # tracks changes in the object
 module RememberHashChanges
   require 'set'
