@@ -1,5 +1,5 @@
 # these are models for test environment
-require_relative '../jsonise'
+require 'vaadin/jsonise'
 
 class Person
    attr_accessor :first_name, :last_name, :city, :country, :id, :year
