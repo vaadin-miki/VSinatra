@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+  <meta charset="utf-8"/>
   <!-- simple ajax requests without extra dependencies -->
   <script src="/assets/js/xmlhttprequest.js"></script>
   <!-- preventing double import of polymer; thanks Artur! -->
@@ -8,7 +9,7 @@
 
 </head>
 <body>
-<p>Select a year or a birthplace. One selection overrides the other.</p>
+<p>Select a year or a birthplace. Both selections affect the rows available in the table.</p>
 
 <vaadin-date-picker id="date"></vaadin-date-picker>
 
@@ -18,11 +19,9 @@
 
 <vaadin-combo-box id="birthplace"></vaadin-combo-box>
 
-<p>People born in a selected birthplace or selected year:</p>
+<p>People born in a selected birthplace and selected year:</p>
 
 <vaadin-grid id="grid"></vaadin-grid>
-
-<p>Last captured value: <span id="last-value"> </span></p>
 
 <script>
   <%= setup_vaadin_elements %>

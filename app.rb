@@ -6,7 +6,6 @@ require_relative 'data/person'
 class VElementsApp < Sinatra::Base
 
   enable :sessions
-  set :session_secret, "asd"
 
   set :app_file, __FILE__
   set :server, ["webrick"]
@@ -19,16 +18,10 @@ class VElementsApp < Sinatra::Base
   end
 
   post '/update' do
+    puts params.inspect
     @elements.sync(params)
-    case params["id"]
-      when "birthplace" then
-        @elements.grid.items = Person.find_all.select { |p| params["value"].nil? || params["value"].empty? || p.country == params["value"] }
-      when "date" then
-        @elements.grid.items = Person.find_all.select { |p| params["value"].nil? || params["value"].empty? || p.year.to_s == params["value"][0...4] }
-      else
-        puts "NOT HANDLED - "+params.inspect
-    end
-    content_type("application/json")
+    @elements.grid.items = Person.find_all.select { |p| (@elements.birthplace.value.nil? || @elements.birthplace.value.empty? || p.country == @elements.birthplace.value) && (@elements.date.value.nil? || @elements.date.value.empty? || p.year.to_s == @elements.date.value[0...4]) }
+    content_type "application/json", :charset => 'uitf-8'
     @elements.changes_map.to_json
   end
 
@@ -50,7 +43,7 @@ class VElementsApp < Sinatra::Base
     @elements.people.itemLabelPath=:display_name
     @elements.people.itemValuePath=:id
 
-    @elements.birthplace.items = %w{Poland Finland elsewhere}
+    @elements.birthplace.items = %w{Poland Finland Germany}
     @elements.birthplace.label = "Choose country of birth."
     @elements.birthplace.onValueChanged = "update"
 
