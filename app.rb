@@ -20,7 +20,8 @@ class VElementsApp < Sinatra::Base
   post '/update' do
     puts params.inspect
     @elements.sync(params)
-    @elements.grid.items = Person.find_all.select { |p| (@elements.birthplace.value.nil? || @elements.birthplace.value.empty? || p.country == @elements.birthplace.value) && (@elements.date.value.nil? || @elements.date.value.empty? || p.year.to_s == @elements.date.value[0...4]) }
+    people = @elements.ignore_changes { Person.find_all.select { |p| (@elements.birthplace.value.nil? || @elements.birthplace.value.empty? || p.country == @elements.birthplace.value) && (@elements.date.value.nil? || @elements.date.value.empty? || p.year.to_s == @elements.date.value[0...4]) } }
+    @elements.grid.items = people
     content_type "application/json", :charset => 'uitf-8'
     @elements.changes_map.to_json
   end
