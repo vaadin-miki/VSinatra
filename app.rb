@@ -39,17 +39,23 @@ class VElementsApp < Sinatra::Base
     @elements.changes_map.to_json
   end
 
+  # post '/vaadin-dropdown-opened/:id' do
+  #   puts "component with id #{params["id"]} was opened! parameters: #{params.inspect}"
+  # end
+
   get '/*' do
     @elements.people.items = Person.find_all
     @elements.people.itemLabelPath=:display_name
     @elements.people.itemValuePath=:id
+    @elements.people.vaadin_events << "value-changed"
+    # @elements.people.vaadin_events["vaadin-dropdown-opened"] = "/:event/:id"
 
     @elements.birthplace.items = %w{Poland Finland Germany}
     @elements.birthplace.label = "Choose country of birth."
-    @elements.birthplace.onValueChanged = "update"
+    @elements.birthplace.vaadin_events["value-changed"] = "update"
 
     @elements.date.label = "Pick a date. Only the year will be used."
-    @elements.date.onValueChanged = "update"
+    @elements.date.vaadin_events["value-changed"] = "update"
 
     @elements.grid.items = Person.find_all
     @elements.grid.columns = [{"name": "first_name"}, {"name": "last_name"}]
