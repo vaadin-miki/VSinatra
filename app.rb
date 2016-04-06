@@ -15,42 +15,38 @@ class VElementsApp < Sinatra::Base
   before do
     @elements ||= (session[:elements] ||= Vaadin::Elements.new)
     @elements.clear_changes
+
+    # remember selected items
+    @selection = session[:selection] ||= {}
+
   end
 
   post '/update' do
-    puts params.inspect
-    @elements.sync(params)
-    people = @elements.ignore_changes { Person.find_all.select { |p| (@elements.birthplace.value.nil? || @elements.birthplace.value.empty? || p.country == @elements.birthplace.value) && (@elements.date.value.nil? || @elements.date.value.empty? || p.year.to_s == @elements.date.value[0...4]) } }
-    @elements.grid.items = people
-    content_type "application/json", :charset => 'uitf-8'
-    @elements.changes_map.to_json
+    puts "UPDATE #{params.inspect}"
+    params[:value].nil? || params[:value].empty? ? @selection.delete(params[:id]) : @selection[params[:id]] = params[:value]
+    puts "SELECT #{@selection.inspect}"
+
+    people = Person.find_all.select { |p| (@selection["birthplace"].nil? || p.country == @selection["birthplace"]) && (@elements.date.value.nil? || @elements.date.value.empty? || p.year.to_s == @elements.date.value[0...4])}
+    content_type "application/json", :charset => 'utf-8'
+    with_this({grid: {items: people}}.to_json) {|x| puts "ANSWER #{x.inspect}"}
   end
 
   post '/~/:id' do
-    @elements.sync(params)
     case params["id"]
-      when "people" then
-        @elements.birthplace.value = (Person.find_by_id(params["value"]).country rescue "")
+      when "person" then
+        puts "-> PRS #{params['value']}"
+        content_type("application/json")
+        {birthplace: {value: (Person.find_by_id(params["value"]).country rescue "")}}.to_json
       else
         puts "NOT HANDLED - "+params.inspect
     end
 
-    content_type("application/json")
-    @elements.changes_map.to_json
   end
 
-  # post '/vaadin-dropdown-opened/:id' do
-  #   puts "component with id #{params["id"]} was opened! parameters: #{params.inspect}"
-  # end
-
   get '/*' do
-    @elements.people.items = Person.find_all
-    @elements.people.itemLabelPath=:display_name
-    @elements.people.itemValuePath=:id
-    @elements.people.vaadin_events << "value-changed"
-    # @elements.people.vaadin_events["vaadin-dropdown-opened"] = "/:event/:id"
 
     @countries = %w{Poland Finland Germany}
+    @people = Person.find_all
 
     @elements.date.label = "Pick a date. Only the year will be used."
     @elements.date.vaadin_events["value-changed"] = "update"

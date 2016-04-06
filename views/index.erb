@@ -15,9 +15,9 @@
 
 <p>Select a person to see the birthplace (and other people born there):</p>
 
-<vaadin-combo-box id="people"></vaadin-combo-box>
+<%= vaadin_combo_box :person, @people, immediate: '/~/:id', item_value_path: 'id', item_label_path: 'display_name' %>
 
-<%= vaadin_combo_box :birthplace, @countries, {options: {immediate: true}} %>
+<%= vaadin_combo_box :birthplace, @countries, {immediate: '/update'} %>
 
 <p>People born in a selected birthplace and selected year:</p>
 
