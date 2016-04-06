@@ -50,9 +50,7 @@ class VElementsApp < Sinatra::Base
     @elements.people.vaadin_events << "value-changed"
     # @elements.people.vaadin_events["vaadin-dropdown-opened"] = "/:event/:id"
 
-    @elements.birthplace.items = %w{Poland Finland Germany}
-    @elements.birthplace.label = "Choose country of birth."
-    @elements.birthplace.vaadin_events["value-changed"] = "update"
+    @countries = %w{Poland Finland Germany}
 
     @elements.date.label = "Pick a date. Only the year will be used."
     @elements.date.vaadin_events["value-changed"] = "update"

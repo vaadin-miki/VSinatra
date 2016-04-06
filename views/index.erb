@@ -17,7 +17,7 @@
 
 <vaadin-combo-box id="people"></vaadin-combo-box>
 
-<vaadin-combo-box id="birthplace"></vaadin-combo-box>
+<%= vaadin_combo_box :birthplace, @countries, {options: {immediate: true}} %>
 
 <p>People born in a selected birthplace and selected year:</p>
 
