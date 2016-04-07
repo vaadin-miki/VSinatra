@@ -13,12 +13,8 @@ class VElementsApp < Sinatra::Base
   helpers Vaadin::ViewHelpers
 
   before do
-    @elements ||= (session[:elements] ||= Vaadin::Elements.new)
-    @elements.clear_changes
-
     # remember selected items
     @selection = session[:selection] ||= {}
-
   end
 
   post '/update' do
@@ -48,8 +44,6 @@ class VElementsApp < Sinatra::Base
     @countries = %w{Poland Finland Germany}
     @people = Person.find_all
 
-    @elements.grid.items = Person.find_all
-    @elements.grid.columns = [{"name": "first_name"}, {"name": "last_name"}]
     erb :index
   end
 

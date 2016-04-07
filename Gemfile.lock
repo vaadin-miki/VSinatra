@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/vaadin-miki/vaadin-elements.git
-  revision: 62ae97738feea0e0968cea98ad69b3e1178041ea
+  revision: f4ce9d77804111cb5eb260cea9656a87676224a8
   branch: development
   specs:
     vaadin-elements (0.3.0)
