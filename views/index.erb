@@ -9,9 +9,10 @@
 
 </head>
 <body>
-<p>Select a year or a birthplace. Both selections affect the rows available in the table.</p>
+<p>Select a year or a birthplace. Both selections affect the rows available in the table. People in the table are born
+  in 2012 and 2014.</p>
 
-<vaadin-date-picker id="date"></vaadin-date-picker>
+<%= vaadin_date_picker id: 'date', immediate: '/update', label: 'Pick a date. Only the year will be used.' %>
 
 <p>Select a person to see the birthplace (and other people born there):</p>
 
