@@ -10,13 +10,13 @@
 <p>Select a year or a birthplace. Both selections affect the rows available in the table. People in the table are born
   in 1980, 1982 and 2014.</p>
 
-<%= vaadin_date_picker id: 'date', immediate: '/update', label: 'Pick a date. Only the year will be used.' %>
+<%= vaadin_date_picker id: 'date', immediate: '/update', label: 'Pick a date. Only the year will be used.', use_callback: true %>
 
 <p>Select a person to see the birthplace (and other people born there):</p>
 
-<%= vaadin_combo_box :person, @people, immediate: '/~/:id', item_value_path: 'id', item_label_path: 'display_name' %>
+<%= vaadin_combo_box :person, @people, immediate: '/~/:id', item_value_path: 'id', item_label_path: 'display_name', use_callback: true %>
 
-<%= vaadin_combo_box :birthplace, @countries, {immediate: '/update'} %>
+<%= vaadin_combo_box :birthplace, @countries, {immediate: '/update', use_callback: true} %>
 
 <p>People born in a selected birthplace and selected year:</p>
 
