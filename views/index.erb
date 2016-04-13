@@ -7,8 +7,9 @@
 
 </head>
 <body>
-<p>Select a year or a birthplace. Both selections affect the rows available in the table. People in the table are born
-  in 1980, 1982 and 2014.</p>
+<p><%= vaadin_icon :arrow_forward %> Select a year or a birthplace. Both selections affect the rows available in the
+  table. People in the table are born
+  from 1999 to 2015.</p>
 
 <%= vaadin_date_picker id: 'date', immediate: '/update', label: 'Pick a date. Only the year will be used.', use_callback: true, month_names: %w{Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec}, cancel: "Nevermind" %>
 
@@ -20,7 +21,7 @@
 
 <p>People born in a selected birthplace and selected year:</p>
 
-<%= vaadin_grid @people, id: "grid", column_names: %w{first_name last_name} %>
+<%= vaadin_grid id: "grid", column_names: %w{first_name last_name}, lazy_load: '/people', size: 8 %>
 
 </body>
 </html>
