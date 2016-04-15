@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'tilt/erb'
 require 'vaadin/elements'
+require 'fileutils'
 require_relative 'data/person'
 
 class VElementsApp < Sinatra::Base
@@ -37,9 +38,20 @@ class VElementsApp < Sinatra::Base
 
   # lazy load here
   post '/people' do
-    puts params.inspect
+    puts "Lazy load: #{params.inspect}"
     content_type 'application/json', :charset => 'utf-8'
     with_this({result: @people[params['index'].to_i, params['count'].to_i], size: @people.size}.to_json) { |x| puts "ANSWER #{x.inspect}" }
+  end
+
+  # upload goes here
+  post '/upload' do
+    puts "Upload #{params.inspect}"
+    FileUtils.cp(params['file'][:tempfile].path, "public/uploads/#{params['file'][:filename]}")
+  end
+
+  # upload successful is reported here
+  post '/uploaded' do
+    puts "File uploaded! #{params.inspect}"
   end
 
   post '/~/:id' do
