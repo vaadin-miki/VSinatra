@@ -1,14 +1,14 @@
 GIT
   remote: git://github.com/vaadin-miki/vaadin-elements.git
-  revision: 692442e5f71ba87412493120064db95dc52cb981
-  branch: development
+  revision: 1e04c3f1c6fa0924d42ffcfbd10b6683905a6a1b
+  branch: master
   specs:
-    vaadin-elements (0.3.0)
+    vaadin-elements (0.4.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    power_assert (0.2.7)
+    power_assert (0.3.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
