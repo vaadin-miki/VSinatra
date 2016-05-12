@@ -26,7 +26,7 @@
 <p>You can also test if file uploading works. Only .zip and .rar files are accepted, and you can upload only two files
   at the same time.</p>
 
-<%= vaadin_upload '/upload', accept: ".rar, .zip", max_files: "2", immediate: '/uploaded', id: "uploader", i18n: {drop_files_here: 'Drag files here. DO IT!', cancel: 'Stahp!', error: {too_many_files: 'Not that many files, please!'}} %>
+<%= vaadin_upload '/upload', accept: ".rar, .zip", max_files: "2", immediate: '/uploaded', id: "uploader", i18n: {drop_files: {many: 'Drag files here. DO IT!'}, cancel: 'Stahp!', error: {too_many_files: 'Not that many files, please!'}} %>
 
 </body>
 </html>
